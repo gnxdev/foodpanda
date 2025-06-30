@@ -27,11 +27,11 @@ POST https://api.geniex.tech/api/v1/auth/token
 {
   "success": true,
   "access_token": {
-    "token": <YOUR_TOKEN_HERE>,
+    "token": "<YOUR_TOKEN_HERE>",
     "expires_in": "1h"
   },
   "refresh_token": {
-    "token": <YOUR_TOKEN_HERE>,
+    "token": "<YOUR_TOKEN_HERE>",
     "expires_in": "30d"
   }
 }
@@ -51,7 +51,7 @@ POST https://api.geniex.tech/api/v1/auth/refresh
 
 ```json
 {
-  "refreshToken": <YOUR_TOKEN_HERE>
+  "refreshToken": "<YOUR_TOKEN_HERE>"
 }
 ```
 
@@ -61,7 +61,7 @@ POST https://api.geniex.tech/api/v1/auth/refresh
 {
   "success": true,
   "accessToken": {
-    "token": <YOUR_TOKEN_HERE>,
+    "token": "<YOUR_TOKEN_HERE>",
     "expires_in": "1h"
   }
 }
@@ -104,7 +104,7 @@ Authorization: `Bearer <ACCESS_TOKEN>`
 ```
 
 <details open>
-<summary><b>Request payload</b> <i>(from Foodpanda Integration Middleware Docs)</summary>
+<summary><b>Request payload</b> <i>(from Foodpanda Integration Middleware Docs)</i></summary>
 
 ```json
 {
