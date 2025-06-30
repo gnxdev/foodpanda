@@ -16,6 +16,10 @@ app.use(express.json());
 app.use(ipWhitelistChecker);
 app.use('/api/v1/foodpanda', orders);
 app.use('/api/v1/auth', auth);
+app.get('/api/v1/foodpanda', (req, res) => {
+    res.send("Hello from GenieX Foodpanda Plugin API")
+})
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
