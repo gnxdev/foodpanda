@@ -2,14 +2,14 @@
 module.exports = {
   apps: [
     {
-      name: 'fp-api-staging',
+      name: 'staging',
       script: './backend/index.js',
       env: {
         NODE_ENV: 'staging'
       }
     },
     {
-      name: 'fp-api-production',
+      name: 'production',
       script: './backend/index.js',
       env: {
         NODE_ENV: 'production'
