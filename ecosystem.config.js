@@ -1,4 +1,5 @@
-export default {
+// ecosystem.config.js
+module.exports = {
   apps: [
     {
       name: 'fp-api-staging',
