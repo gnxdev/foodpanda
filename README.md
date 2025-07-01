@@ -1,6 +1,6 @@
 
 <p align="left" style="margin-left:0">
-<img style="vertical-align: middle;" src="https://api.geniex.tech/gnx_logo.png" alt="genieXLogo" height=40 />
+<img style="vertical-align: middle;" src="https://api.geniex.tech/assets/images/gnx_logo.png" alt="genieXLogo" height=40 />
 <span style="font-size: 2em; font-weight: bold; vertical-align: middle; margin-left:10px"> GenieX Foodpanda Plugin Deployment Setup</span>
 </p>
 In this guide, you will learn how to set up and deploy the backend service with a MySQL database. By the end, you’ll have a robust environment that runs in the background and persists even after system reboots.
