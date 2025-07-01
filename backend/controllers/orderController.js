@@ -7,7 +7,12 @@ import ToppingDiscounts from "../models/ToppingDiscount.js";
 import Sponsorships from "../models/Sponsorships.js";
 import DeliveryFee from "../models/DeliveryFee.js";
 import {getSequelizeInstance} from '../config/database/SequelizeInstance.js';
+import fs from 'fs';
+import path from "path";
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Import the Sequelize instance for the foodpanda database
 const sequelize = getSequelizeInstance({database: 'foodpanda'});
 // util to get client IP
@@ -223,8 +228,25 @@ export const receiveOrder = async (req, res) => {
         await insertToppingRecursive(topping, orderline.id);
       }
     }
-    
-    res.status(201).json({ remoteResponse: { remoteOrderId: "POS_RESTAURANT_0001_ORDER_000001"} });
+    const content = `${order.id}:27:10:0=0:0/0: :8-9036\n${order.id}:2006-934|12052|10078|10431|500012|169/30007592|10433-10817|10369`;
+    const filename = `${order.id}.txt`;
+    const filepath = path.join(__dirname, 'logs', filename);
+
+    fs.mkdir(path.join(__dirname, 'logs'), {recursive: true}, (err) => {
+      if (err) {
+        console.error("Error creating logs directory:", err);
+        return res.status(500).json({ error: "Internal Server Error", message: err.message });
+      }
+      fs.writeFile(filepath, content, (err) => {
+        if (err) {
+          console.error("Error writing file:", err);
+          return res.status(500).json({ error: "Internal Server Error", message: err.message });
+        }
+        console.log("File written successfully:", filename);
+      })
+    })
+
+    res.status(201).json({ remoteResponse: { remoteOrderId: order.id} });
   } catch (err) {
     console.error("Order processing failed:", err);
     res.status(500).json({ error: "Internal Server Error" });
