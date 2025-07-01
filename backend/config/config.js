@@ -9,7 +9,7 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 //sequelize config file for database (Foodpanda)
 export default {
-    development: {
+    staging: {
         username: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASSWORD,
         database: process.env.MYSQL_DATABASE,

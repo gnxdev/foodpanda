@@ -5,7 +5,9 @@
   "scripts": {
     "start:dev": "cross-env NODE_ENV=staging nodemon index.js",
     "start:prod": "cross-env NODE_ENV=production node index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:create": "node config/database/createDatabase.js",
+    "db:migrate": "node config/database/run-migration.js"
   },
   "keywords": [],
   "author": "",

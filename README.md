@@ -1,6 +1,6 @@
 
 <p align="left" style="margin-left:0">
-<img style="vertical-align: middle;" src="https://private-user-images.githubusercontent.com/208609144/460832960-7d99bf15-a135-41a8-8bbd-00a51d9675f5.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTEzMzc1NTAsIm5iZiI6MTc1MTMzNzI1MCwicGF0aCI6Ii8yMDg2MDkxNDQvNDYwODMyOTYwLTdkOTliZjE1LWExMzUtNDFhOC04YmJkLTAwYTUxZDk2NzVmNS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzAxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcwMVQwMjM0MTBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1mZTg3YjIzYTdmN2UzM2E0MjdlNmEyYzRjNTJkNGNkZWNhZDZkNDNiNjhlYjFmNDZlNzRmOWM4ZGViMDFhYjY3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.k3dKL65B-DdJ7R7iLQAYU91aC17BAErj0nXhrxlHQKU" alt="genieXLogo" height=40 />
+<img style="vertical-align: middle;" src="https://api.geniex.tech/gnx_logo.png" alt="genieXLogo" height=40 />
 <span style="font-size: 2em; font-weight: bold; vertical-align: middle; margin-left:10px"> GenieX Foodpanda Plugin Deployment Setup</span>
 </p>
 In this guide, you will learn how to set up and deploy the backend service with a MySQL database. By the end, you’ll have a robust environment that runs in the background and persists even after system reboots.
@@ -23,38 +23,130 @@ In this guide, you will learn how to set up and deploy the backend service with 
    Configure a system task using PM2 to ensure the backend service runs in the background and automatically restarts after a system reboot.
 
 ---
-<details>
+<details open>
 <summary><h2>🚀Production Environment</h2></summary>
 
 ## 🔐 Configure Environment Variables
 
-### 1. Copy `.env.example.production`  to `/backend` and rename it to `.env`
+### 1. Copy and Rename `.env.example.production`  to `./backend/.env`.
 
+**🪟 For Powershell or CMD, run:**
 ```powershell
-# Powershell or CMD command 
 copy .env.example.production backend\.env
 ``` 
 
+**🐚 For Bash, run:**
 ```bash
-# bash command 
 cp .env.example.production backend/.env 
 ```
 
+### 2. Enter `MySQL credentials` and `JWT Token Secrets`.
+#### 🔗[JWT Secret Key Generator](https://jwtsecrets.com/#generator) - Use this to generate secret keys.
+- For `JWT_Secret` and `JWT_REFRESH_TOKEN` use **128 bits**.
+- For `FOODPANDA_CLIENT_SECRET` use at least **32 bits**.
+
 ## 📦 Install PM2 and Project Dependencies
 
-### 1. Install PM2 globally
-```bash
+### 1. Install `PM2` globally
+**Open `powershell` and run:**
+```powershell
 npm install -g pm2
 ```
 *For more information on PM2. Read their documentation [here.](https://pm2.io/docs/runtime/guide/installation)*
 
 ### 2. Install Project Dependencies
-**Go to ./backend directory:**
+**In `root` directory, run:** 
 ```bash
 cd backend
 ```
-**Install packages using npm:**
+**In `backend` directory, run:** *(For production, omit devDependencies using --omit=dev)*
 ```bash
-npm install --production
+npm install --omit=dev
 ```
+
+## 🛠️ Initialize the MySQL Database
+
+### 1. Create `foodpanda` schema.
+
+**In `backend` directory, run:**
+```bash
+npm run db:create
+```
+
+## 🗃️ Apply Database Migrations
+
+### 1. Run `migration` scripts
+**In `backend` directory, run:**
+```bash
+npm run db:migrate
+```
+
+## 🖥️ Enable Persistent Background Deployment
+
+### 1. Run `powershell` as Administrator.
+
+
+### 2. Go to project's root directory `./foodpanda`.
+**In `powershell`, run:**
+```powershell
+pm2 start ecosystem.config.js --only production --env production
+```
+*Note: ecosystem.config.js should be in current directory.*
+
+**ℹ️ You should see something like this:**
+
+![pm2 preview](https://api.geniex.tech/assets/images/pm2-preview.png)
+
+### 3. Save `PM2` process.
+**In `powershell`, run:**
+```powershell
+pm2 save
+```
+
+**ℹ️ You should see something like this:**
+
+![pm2 save preview](https://api.geniex.tech/assets/images/pm2-save-preview.png)
+
+### 4. Create a task in `Task Scheduler` to run `PM2` in the background.
+
+<details open><summary><b>General Tab</b></summary>
+
+![General Tab](https://api.geniex.tech/assets/images/general-tab.png)
 </details>
+
+<details open><summary><b>Triggers Tab</b></summary>
+
+![Triggers Tab](https://api.geniex.tech/assets/images/trigger-tab.png)
+</details>
+
+<details open><summary><b>Actions Tab</b></summary>
+
+<b>Program script:</b> C:\Users\YOUR-USER\AppData\Roaming\npm\pm2.cmd 
+<i>(or wherever the pm2.cmd is located)</i><br>
+<b>Argument: </b> resurrect
+
+![Actions tab](https://api.geniex.tech/assets/images/actions-tab.png)
+
+</details>
+
+<details open> <summary><b>Conditions Tab</b></summary>
+
+![Conditions tab](https://api.geniex.tech/assets/images/conditions-tab.png)
+</details>
+
+
+## ✅ Conclusions & Final Notes
+🎉 Congratulations! You've successfully set up and deployed the `production environment`. The plugin should now be live, optimized, and ready to handle orders from **Foodpanda**.
+
+📌 Make sure to:
+- Monitor logs and performance metrics regularly.
+- Secure your environment variables and secrets.
+- Document any additional configurations or deployment changes for future reference.
+
+</details>
+
+---
+
+📬 **Need Help or Have Questions?**
+Feel free to reach out to me at emingala02@gmail.com -- I'm happy to assist with any concerns or clarifications.
+
