@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-// Presigned client secrets for Foodpanda (You can add more clients as needed)
-const CLIENTS = {
-    foodpanda: process.env.FOODPANDA_CLIENT_SECRET,
+// Presigned client secrets for Foodpanda
+const CLIENT = {
+    [process.env.FOODPANDA_CLIENT_ID]: process.env.FOODPANDA_CLIENT_SECRET,
 };
 
 // Function to generate access token
@@ -19,7 +19,7 @@ export const generateRefreshToken = (client) => {
 export const generateToken = async (req, res) => {
     const { username, password } = req.body;
 
-    const storedSecret = CLIENTS[username];
+    const storedSecret = CLIENT[username];
     if (!storedSecret || storedSecret !== password) {
         return res.status(401).json({ error: 'Invalid credentials' });
     }
