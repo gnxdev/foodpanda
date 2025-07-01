@@ -230,9 +230,10 @@ export const receiveOrder = async (req, res) => {
     }
     const content = `${order.id}:27:10:0=0:0/0: :8-9036\n${order.id}:2006-934|12052|10078|10431|500012|169/30007592|10433-10817|10369`;
     const filename = `${order.id}.txt`;
-    const filepath = path.join(__dirname, 'logs', filename);
+    const logsDir = path.join(__dirname, '..', 'logs')
+    const filepath = path.join(logsDir, filename);
 
-    fs.mkdir(path.join(__dirname, 'logs'), {recursive: true}, (err) => {
+    fs.mkdir(logsDir, {recursive: true}, (err) => {
       if (err) {
         console.error("Error creating logs directory:", err);
         return res.status(500).json({ error: "Internal Server Error", message: err.message });
